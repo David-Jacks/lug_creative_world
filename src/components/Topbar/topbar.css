@@ -1,0 +1,232 @@
+.topbar {
+  background-color: var(--white); /*use variables everytime*/
+  /* height: auto; */
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 3rem;
+}
+.logo-1 .img1 {
+  height: 6.5rem;
+  transform: translateY(0.5rem); /*you can rather translate so that it deos not take space*/
+}
+.topbar .container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo-1 {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--black);
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  list-style-type: none;
+  width: 40%;
+  align-items: center;
+}
+.navbar .write {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--black);
+  text-decoration: none;
+}
+.write .write_icon {
+  font-size: 3.5rem;
+  /* padding-top: 1.2rem; */
+  padding-top: 1rem;
+  padding-left: 1.2rem;
+}
+.write .write_link {
+  padding-top: 1rem;
+  padding-left: 1rem;
+  font-size: 2rem;
+  font-family: var(--poppins);
+  /* font-weight: bold; */
+  text-decoration: none;
+  color: var(--black);
+}
+.img4 {
+  height: 5rem;
+  border-radius: 10rem;
+  border: 3px solid var(--black);
+  /* margin-top: 1rem; */ /*this reduces whitespaces on screen, and removing it will be fine*/
+}
+.navbar li {
+  background-color: var(--white);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 1rem;
+  height: 100%;
+  transition: all ease-in-out 0.3s;
+}
+.topbar .notification {
+  position: relative;
+  width: 5.5rem;
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.topbar .notification span {
+  width: 2.4rem;
+  font-family: var(--poppins);
+  text-align: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--third-color);
+  padding: 0.4rem;
+  border-radius: 50%;
+  color: #F5F5F5;
+  font-size: 1rem;
+}
+.topbar .notification-icon {
+  background-color: var(--second-color);
+  padding: 0.3rem;
+  font-size: 3.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--black);
+}
+
+/* dealling with toggle menu for switching between white and dark modes */
+.topbar .bg__change{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.topbar .checkbox{
+  opacity: 0;
+  width: 5rem;
+  height: 2rem;
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+}
+.topbar .checkbox__label{
+  background: #565858;
+  width: 5rem;
+  height: 2.4rem;
+  border-radius: 4.8rem;
+  padding: 2.5px 3px 2.5px 1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border: .2rem solid var(--black);
+}
+.topbar .fa-sun, .topbar .fa-moon{
+  color: #F5F5F5;
+  font-size: 1.8rem;
+}
+.checkbox__label .check__ball{
+  background-color: #F5F5F5;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  position: absolute;
+  left: .02rem;
+  transition: transform .2s linear;
+}
+
+.topbar .checkbox:checked + .checkbox__label .check__ball{
+  transform: translateX(2.4rem);
+}
+
+/* other stylings */
+.logo-text {
+  font-size: 2rem;
+  margin-left: 1rem;
+  font-family: var(--poppins);
+  padding-top: 2.2rem;
+  text-shadow: var(--white) 2px 1px 1px;
+  color: var(--black);
+  transform: translateY(-1rem);
+}
+.logo-text .colored_part{
+  color: var(--first-color);
+  font-size: 2rem;
+}
+.publish-button {
+  background-color: var(--second-color);
+  font-family: var(--poppins);
+  color: var(--black);
+  border: none;
+  padding: 0.9rem 1.5rem;
+  border-radius: 2rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.bottom-box-shadow {
+  box-shadow: 0px 3px 8px var(--second-color);
+  z-index: 344;
+}
+.topbar.bottom-box-shadow{
+  display: flex;
+  flex-direction: column;
+}
+.topbar_panel{
+  display: none;
+}
+
+/* handling media queries */
+@media only screen and (min-width: 320px) and (max-width: 768px){
+  .topbar {
+    padding: 0.4rem .2rem;
+  }
+  .logo-1 {
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--black);
+  }
+  .logo-1 .img1 {
+    height: 7rem;
+    transform: translateY(0.5rem); /*you can rather translate so that it deos not take space*/
+  }
+  .logo-text{
+    font-size: 1.3rem;
+    margin-left: 0rem;
+    padding: 0;
+    transform: translateX(-.5rem);
+    word-wrap: break-word;
+    overflow: hidden;
+  }
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    width: 40%;
+    align-items: center;
+  }
+  .publish-button {
+    padding: 0.5rem 1rem;
+    margin-top: .5rem;
+  }
+  .navbar li {
+    padding: 0 .6rem;
+  }
+  .topbar_panel{
+    display: flex;
+    align-self: flex-start;
+    font-size: 4.5rem;
+    color: var(--black);
+  }
+}
+
+
+

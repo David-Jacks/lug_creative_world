@@ -1,0 +1,45 @@
+#articlelist
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 1.2rem;
+}
+#articlelist .list_wrapper
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-bottom: 1rem;
+}
+/* #articlelist .list_wrapper:last-child{
+    border-bottom:none;
+} */
+#articlelist .list_wrapper h3
+{
+    font-family: var(--poppins);
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 2rem;
+    text-transform: capitalize;
+}
+#articlelist span
+{
+    font-family: var(--poppins);
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: var(--black);
+}
+#articlelist .list_wrapper > div
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+#articlelist .list_wrapper .link
+{
+    text-decoration: none;
+    color: var(--black);
+}
