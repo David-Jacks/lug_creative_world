@@ -10,7 +10,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loading from "../../components/Modals/loadingmodal/loading";
 import Articletext from "../Articletext/articletext";
-import Axios from "axios";
 import { handleLikeClick, getLikes, saveArticle } from "../../api";
 import CommentModal from "../Modals/commentModal/comment";
 const Article = () => {
@@ -23,30 +22,30 @@ const Article = () => {
   const [liked, setLiked] = useState(false);
   const [flagged, setFlaged] = useState("Not Flagged");
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await Axios.get(`/api/posts/${path}`);
-        setArticle(response.data);
-      } catch (error) {
-        throw error;
-      }
-    };
-    fetchPost();
-    if (path !== undefined) {
-      const fetchData = async () => {
-        try {
-          const likesData = await getLikes(path);
-          console.log(likesData);
-          setLikes(likesData.likes);
-          setLiked(likesData.liked);
-        } catch (error) {
-          throw error;
-        }
-      };
-      fetchData();
-    }
-  }, [path]);
+  // useEffect(() => {
+    // const fetchPost = async () => {
+    //   try {
+    //     const response = await Axios.get(`/api/posts/${path}`);
+    //     setArticle(response.data);
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // };
+    // fetchPost();
+  //   if (path !== undefined) {
+  //     const fetchData = async () => {
+  //       try {
+  //         const likesData = await getLikes(path);
+  //         console.log(likesData);
+  //         setLikes(likesData.likes);
+  //         setLiked(likesData.liked);
+  //       } catch (error) {
+  //         throw error;
+  //       }
+  //     };
+  //     fetchData();
+  //   }
+  // }, [path]);
 
   function handleSave() {
     saveArticle(path);

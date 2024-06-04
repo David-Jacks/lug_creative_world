@@ -3,13 +3,12 @@ import "./Loginpage.css";
 import Landing from "../../components/Landing/landing";
 import { GiCancel } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../firebaseconfig";
-import {signInWithEmailAndPassword} from "firebase/auth"
 import { useDispatch } from "react-redux";
 import { login } from "../../features/users";
 import Loading from "../../components/Modals/loadingmodal/loading";
 import Error from "../../components/Modals/errors/errors";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { UserLogin } from "../../api";
 
 export default function Loginpage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +19,6 @@ export default function Loginpage() {
   };
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [errorMessage, setErrMessage] = useState("");
   const [error, setError] = useState({});
   const [valid, setValid] = useState(false);
@@ -31,6 +29,7 @@ export default function Loginpage() {
     userEmail: "",
     password: "",
   });
+  
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex =
     /^(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{5,20}$/;
@@ -58,22 +57,17 @@ export default function Loginpage() {
     e.preventDefault();
     setLoading(true);
     // setLoading(false);
-    const res = await signInWithEmailAndPassword(auth, formData.userEmail, formData.password);
-    if (res === 400) {
+    try {
+      const res = await UserLogin(formData);
       setLoading(false);
-      setMyErr(true);
-      setErrMessage("You inputed a wrong password");
-    } else if (res === 404) {
-      setLoading(false);
-      setMyErr(true);
-      setErrMessage("userEmail not registered please signup");
-    } else if (res === 500) {
-      setMyErr(true);
-      setLoading(false);
-      setErrMessage("Network error please try again!");
-    } else {
-      // dispatch(login(res));
+      // getting the users id from the response and distpatching it as a current state id
+      const userId = res._tokenResponse.localId;
+      dispatch(login(userId));
       window.location.href = "/dashboard"
+    } catch (error) {
+      setLoading(false);
+      setMyErr(true);
+      setErrMessage("Invalid email or password, please check!");
     }
   };
 

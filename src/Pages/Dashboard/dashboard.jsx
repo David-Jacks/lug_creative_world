@@ -75,21 +75,21 @@ const Dashboard = memo(() => {
   // } = useQuery("topauthorsdata", getTopAuthors);
 
   useEffect(() => {
-    async function searcher() {
-      const ans = await getArticleByCat(searchQuery);
-      setSearchResult(ans);
-    }
+    // async function searcher() {
+    //   const ans = await getArticleByCat(searchQuery);
+    //   setSearchResult(ans);
+    // }
 
-    searcher();
+    // searcher();
   }, [searchQuery]);
 
   useEffect(() => {
-    async function searchByTitle() {
-      const ans = await getArticleByTitle(titleQuery);
-      setSearchResult(ans);
-    }
+    // async function searchByTitle() {
+    //   const ans = await getArticleByTitle(titleQuery);
+    //   setSearchResult(ans);
+    // }
 
-    searchByTitle();
+    // searchByTitle();
   }, [titleQuery]);
 
   let sortedPosts;
@@ -193,7 +193,7 @@ const Dashboard = memo(() => {
             </div>
           </div>
           <div className={sidebar ? "dashboard_right" : "show_right"}>
-            {sortedPosts.map((data) => (
+            {sortedPosts && sortedPosts.map((data) => (
               <Articlecard key={data._id} articles={data} />
             ))}
             ;

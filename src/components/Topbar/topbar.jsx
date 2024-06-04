@@ -11,7 +11,7 @@ import {
 import { FaSun } from "react-icons/fa";
 import { FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { fetchUserData } from "../../api";
+// import { fetchUserData } from "../../api";
 import { useDispatch } from "react-redux";
 import { updateTheme } from "../../features/theme";
 
@@ -26,16 +26,16 @@ const Topbar = memo((props) => {
     props.showBottomBoxShadow ? "bottom-box-shadow" : "",
   ].join(" ");
 
-  const userString = localStorage.getItem("user");
-  const user = JSON.parse(userString);
-  useEffect(() => {
-    const userDataFromBackend = async () => {
-      const ans = await fetchUserData(user._id);
-      setUserInfo(ans);
-    };
+  // const userString = localStorage.getItem("user");
+  // const user = JSON.parse(userString);
+  // useEffect(() => {
+    // const userDataFromBackend = async () => {
+    //   const ans = await fetchUserData(user._id);
+    //   setUserInfo(ans);
+    // };
 
-    userDataFromBackend();
-  }, [user._id]);
+    // userDataFromBackend();
+  // }, [user._id]);
 
   // taking care of changing themes
 
@@ -108,7 +108,7 @@ const Topbar = memo((props) => {
           </li>
           {!props.profile ? (
             <li>
-              <Link to={`/profile/${user._id}`}>
+              <Link to={`/profile/`}>
                 {!userinfo.profilePicture ? (
                   <img className="img4" src={image2} alt="" />
                 ) : (

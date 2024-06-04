@@ -27,23 +27,24 @@ const Writepage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rows, setRows] = useState(1);
 
-  const userdatastring = localStorage.getItem("user"); //getting user info from the localstorage
-  const user = JSON.parse(userdatastring);
+  const userid = localStorage.getItem("user").replace(/"/g, ""); //getting user info from the localstorage
   useEffect(() => {
     const fetchUser = async () => {
-      const userInfo = await fetchUserData(user._id);
+      console.log(userid)
+      const userInfo = await fetchUserData(userid);
       setUserData(userInfo);
     };
+
     fetchUser();
-  }, [user._id]);
+  }, []);
 
   const author = userData.username;
-  const authorId = userData._id;
-
+  // since the author of every post will be the current user
+  const authorId = userid; 
   const articleData = {
     title,
     body,
-    author,
+    // author,
     description,
     timeTakenToReadPost,
     categories,
@@ -172,6 +173,7 @@ const Writepage = () => {
             handleTimeTaken={handleTimeTaken}
             onClose={() => setIsModalOpen(false)}
             transfer1={articleData}
+            author={author}
             transfer2={articleUpdateData}
           />
         )}

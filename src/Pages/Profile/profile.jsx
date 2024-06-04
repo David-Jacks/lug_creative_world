@@ -30,11 +30,12 @@ const Profile = memo(() =>
     //     setImg(e.target.value);
     // }
 
-    const {data: userDataQuery, error: usererror, isLoading: userisloading} = useQuery(["userdata", userProfileId], () =>fetchUserData(userProfileId), { 
-      enabled: userProfileId !== undefined});
-    const {data: userArticleQuery, error: userArticleerror, isLoading: userarticleisloading} = useQuery(["userArticle", userProfileId], () =>fetchuserArticles(userProfileId), {
-      enabled: userProfileId !== undefined});
-
+    // const {data: userDataQuery, error: usererror, isLoading: userisloading} = useQuery(["userdata", userProfileId], () =>fetchUserData(userProfileId), { 
+    //   enabled: userProfileId !== undefined});
+    // const {data: userArticleQuery, error: userArticleerror, isLoading: userarticleisloading} = useQuery(["userArticle", userProfileId], () =>fetchuserArticles(userProfileId), {
+    //   enabled: userProfileId !== undefined});
+const userDataQuery = []
+const userArticleQuery = []
 
   const handleLogout = useCallback(() => {
     dispatch(logout());
@@ -62,10 +63,10 @@ const Profile = memo(() =>
 
 
 
-  if (userisloading || userarticleisloading)
-  {
-    return <Loading />;
-  }
+  // if (userisloading || userarticleisloading)
+  // {
+  //   return <Loading />;
+  // }
 
   return (
     <>

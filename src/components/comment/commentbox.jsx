@@ -6,7 +6,7 @@ import { BsThreeDots } from "react-icons/bs";
 // import { FaFlag, FaRegSave, FaSadCry } from "react-icons/fa";
 import { useState } from "react";
 import moment from "moment";
-import { delComment } from "../../api";
+// import { delComment } from "../../api";
 
 const Commentbox = ({ comment, postid }) => {
   const [showDrop, setShowDrop] = useState(false);
@@ -14,13 +14,13 @@ const Commentbox = ({ comment, postid }) => {
   const handleDrop = () => {
     setShowDrop(!showDrop);
   };
-  const handleDelete = async () => {
-    const ans = await delComment(postid, comment._id);
-    if (ans === 200) {
-      alert("successfully deleted comment");
-      window.location.reload();
-    }
-  };
+  // const handleDelete = async () => {
+  //   const ans = await delComment(postid, comment._id);
+  //   if (ans === 200) {
+  //     alert("successfully deleted comment");
+  //     window.location.reload();
+  //   }
+  // };
   return (
     <>
       <div id="comment_box">
@@ -43,7 +43,7 @@ const Commentbox = ({ comment, postid }) => {
             {<BsThreeDots className="icon" onClick={handleDrop} />}
             <ul className={`drop ${showDrop ? "showdrop" : ""}`}>
               <li>
-                <span onClick={handleDelete}>Delete</span>
+                <span >Delete</span>
               </li>
               <li>Edit</li>
             </ul>

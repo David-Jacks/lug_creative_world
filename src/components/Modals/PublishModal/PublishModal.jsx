@@ -18,33 +18,24 @@ const PublishModal = (props) => {
     title,
     body,
     description,
-    author,
+    // author,
     timeTakenToReadPost,
     categories,
     authorId,
   } = props.transfer1;
 
-  const formData = useMemo(() => {
-    const data = new FormData();
-    data.append("title", title);
-    data.append("descPhoto", descPhoto);
-    data.append("body", body);
-    data.append("author", author);
-    data.append("authorId", authorId);
-    data.append("timeTakenToReadPost", timeTakenToReadPost);
-    data.append("description", description);
-    data.append("categories", categories);
-    return data;
-  }, [
+  const formData = {
     title,
     body,
     description,
-    author,
+    // author,
     timeTakenToReadPost,
     categories,
     authorId,
     descPhoto,
-  ]);
+    comments: {},
+    likes: {}
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,20 +45,26 @@ const PublishModal = (props) => {
       // Collect form data and pass it to the onProceed function
       if (title && body && description) {
         setLoad(true);
+        // if the user is updating the post control enters here
         if (props.transfer2.isUpdate) {
           const ans = await updateArticle(props.transfer2.id, formData);
-          if (ans === 413) {
-            alert("NOTE: Post is too large......");
+          if (ans) {
+            alert("updated successfully");
             props.onClose();
             setLoad(false);
           }
-        } else {
+        }// if the user posting an article control enters here
+        else {
           const ans = await sendPostData(formData);
-          if (ans === 413) {
-            alert("NOTE: Post is too large......");
+          if (ans) {
+            alert("posted successfully");
             props.onClose();
             setLoad(false);
-          } //else if (ans === )
+          }else{
+            alert("error posting");
+            props.onClose();
+            setLoad(false);
+          }
         }
 
         props.onClose();
@@ -87,7 +84,7 @@ const PublishModal = (props) => {
     <div className="publish-modal">
       <div className="modal-content">
         <div className="publish-top">
-          <h4>{author} is publishing</h4>
+          <h4>{props.author} is publishing</h4>
           <button className="cancel-button" onClick={props.onClose}>
             <GiCancel />
           </button>

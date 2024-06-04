@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import "./joinpage.css";
 import Landing from "../../components/Landing/landing";
 import { GiCancel } from "react-icons/gi";
-import { Link, useNavigate } from "react-router-dom";
-import { auth, db } from "../../firebaseconfig"
-import {createUserWithEmailAndPassword} from "firebase/auth"
-import {collection, addDoc} from "firebase/firestore"
+import { Link } from "react-router-dom";
 import Loading from "../../components/Modals/loadingmodal/loading";
 import Error from "../../components/Modals/errors/errors";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { join } from "../../api";
+
 export default function JoinPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -28,10 +27,19 @@ export default function JoinPage() {
   const [myerr, setMyErr] = useState(false);
   const [valid, setValid] = useState(false);
   const [error, setError] = useState({});
+  // user informations
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
+    profilePicture: "",
+    firstName: "",
+    lastName: "",
+    year: "",
+    program: "",
+    following: {},
+    followers: {},
+    savedArticles: [],
+    isAdmin: false,
     confirmPassword: "",
     agreeToTerms: checked,
   });
@@ -42,6 +50,7 @@ export default function JoinPage() {
     /^(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{5,20}$/;
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    // if the type of the event is a checkbox, then the value should be checked or else the value remains the value of the form input
     const newValue = type === "checkbox" ? checked : value;
 
     setFormData({
@@ -78,22 +87,15 @@ export default function JoinPage() {
     }
   };
 
+  //destructing formData to get the actuall needed field to store in my database 
   const { confirmPassword, agreeToTerms, ...actData } = formData;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (valid && checked) {
-        const res = await createUserWithEmailAndPassword(auth, actData.email, actData.password);
-        
-          await addDoc(collection(db, "users"), {
-            userEmail: actData.email,
-            userName: actData.username
-          })
-          if (res){
-           window.location.href = "/dashoard" 
-          }
+        if (valid && checked) {
+          await join(actData);
           setLoading(false);
         }
       }

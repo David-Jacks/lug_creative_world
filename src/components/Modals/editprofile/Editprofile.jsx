@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GiCancel } from "react-icons/gi";
 import "./Editprofile.css";
-import { uploadProfileImage } from "../../../api";
+// import { uploadProfileImage } from "../../../api";
 
 const EditModal = (props) => {
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
@@ -21,14 +21,14 @@ const EditModal = (props) => {
   };
 
   const handlePhoto = async (e) => {
-    e.preventDefault();
-    if (photo) {
-      imgUrl = await uploadProfileImage(photo);
-    }
-    profileUpdateData.photo = imgUrl;
+    // e.preventDefault();
+    // if (photo) {
+    //   imgUrl = await uploadProfileImage(photo);
+    // }
+    // profileUpdateData.photo = imgUrl;
 
-    props.onClose();
-    window.location.reload();
+    // props.onClose();
+    // window.location.reload();
   };
 
   const handleSubmit = async (e) => {
