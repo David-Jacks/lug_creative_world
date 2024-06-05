@@ -1,11 +1,9 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useState, useEffect} from "react";
 import Articlecard from "../../components/Articlecard/articlecard";
 import "./profile.css";
-import { useState } from "react";
 import profile_img2 from "../../images/profilevactor.jpg";
 import Topbar from "../../components/Topbar/topbar";
 import { CiCamera } from "react-icons/ci";
-import { useQuery } from "react-query";
 import { Logout, fetchUserData, fetchuserArticles } from "../../api";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/users";
@@ -15,26 +13,28 @@ import Loading from "../../components/Modals/loadingmodal/loading";
 
 const Profile = memo(() => 
 {
-    const userdatastring= localStorage.getItem("user");
-    const user = JSON.parse(userdatastring);
+    const userIdString =  localStorage.getItem("user").replace(/"/g, ""); //getting user info from the localstorage;
     const location = useLocation();
     const userProfileId = location.pathname.split("/")[2];
-    const rightUser = user._id === userProfileId;
+    const rightUser = userIdString === userProfileId;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isprofilepic, setIsprofilepic] = useState(false);
-    // const [img, setImg] = useState(null);
+    const [userDataQuery, setUserDataQuery] = useState([])
+    const [img, setImg] = useState(null);
     const dispatch = useDispatch();
     const [on, setOn] = useState(false);
 
-    // const handleImg = (e) =>{
-    //     setImg(e.target.value);
-    // }
+    const handleImg = (e) =>{
+        setImg(e.target.value);
+    }
+useEffect(()=>{
+  const userDataProfile = async() =>{
+    const user = await fetchUserData(userIdString);
+    setUserDataQuery({...user, id: userIdString});
+  }
+  userDataProfile();
+}, [])
 
-    // const {data: userDataQuery, error: usererror, isLoading: userisloading} = useQuery(["userdata", userProfileId], () =>fetchUserData(userProfileId), { 
-    //   enabled: userProfileId !== undefined});
-    // const {data: userArticleQuery, error: userArticleerror, isLoading: userarticleisloading} = useQuery(["userArticle", userProfileId], () =>fetchuserArticles(userProfileId), {
-    //   enabled: userProfileId !== undefined});
-const userDataQuery = []
 const userArticleQuery = []
 
   const handleLogout = useCallback(() => {
@@ -63,10 +63,10 @@ const userArticleQuery = []
 
 
 
-  // if (userisloading || userarticleisloading)
-  // {
-  //   return <Loading />;
-  // }
+  if ( userDataQuery.length < 0)
+  {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -78,7 +78,7 @@ const userArticleQuery = []
         />
         <div className="profile_first_half">
           <div className="profile_img">
-            {userDataQuery.profilePicture ? <img src={`data:image/png;base64,${userDataQuery.profilePicture}`} alt="profile" /> :
+            {userDataQuery.profilePicture ? <img src={userDataQuery.profilePicture} alt="profile" /> :
             <img src={profile_img2} alt="profile" />
             }
             {rightUser && <CiCamera className="profile_img_update" onClick={handleProfilePic}/>}

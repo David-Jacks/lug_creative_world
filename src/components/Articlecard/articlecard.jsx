@@ -15,10 +15,11 @@ import {
 } from "../../api";
 import { useDispatch } from "react-redux/";
 import { update } from "../../features/article";
+import moment from "moment";
 
 const Articlecard = memo(
   (
-    { articles } ///memoizing this component, so that it will remember the props that chages to prevent unneccesary rerendering
+    { articles } ///memoizing this component, so that it will remember the props that changes to prevent unneccesary rerendering
   ) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -30,20 +31,20 @@ const Articlecard = memo(
     const [flagged, setFlaged] = useState("Not Flagged");
 
     useEffect(() => {
-      if (articles._id !== undefined) {
+      if (articles.id !== undefined) {
         const fetchData = async () => {
           try {
-            const likesData = await getLikes(articles._id);
+            // const likesData = await getLikes(articles._id);
 
-            setLikes(likesData.likes);
-            setLiked(likesData.liked);
+            // setLikes(likesData.likes);
+            // setLiked(likesData.liked);
           } catch (error) {
             throw error;
           }
         };
         fetchData();
       }
-    }, [articles._id]);
+    }, [articles.id]);
 
     async function handleLikes() {
       if (liked) {
@@ -86,7 +87,8 @@ const Articlecard = memo(
       if (flagged === "Flagged") setFlaged("Not Flagged");
       else if (flagged === "Not Flagged") setFlaged("Flagged");
     }
-
+    // {moment(articles.created_at).format('MMMM Do, YYYY')}
+    console.log(articles.created_at.seconds)
     return (
       <>
         <div className="article_post">
@@ -98,9 +100,9 @@ const Articlecard = memo(
                   className="article_card_linker"
                 >
                   <li>
-                    {articles.authorProfilePic ? (
+                    {articles.authorProfile ? (
                       <img
-                        src={`data:image/png;base64,${articles.authorProfilePic}`}
+                        src={articles.authorProfile}
                         alt=""
                       />
                     ) : (
@@ -110,10 +112,7 @@ const Articlecard = memo(
                   </li>
                 </Link>
                 <li>
-                  {new Date(articles.createdAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                  })}
+                  {moment(articles.created_at.toDate()).fromNow()}
                 </li>
                 <li className="show_on">
                   {articles.timeTakenToReadPost} min read
@@ -125,7 +124,7 @@ const Articlecard = memo(
               <div className="letter_part">
                 <Link
                   className="article_card_linker"
-                  to={`/article/${articles._id}`}
+                  to={`/article/${articles.id}`}
                 >
                   <h2>{articles.title}</h2>
                 </Link>
@@ -134,7 +133,7 @@ const Articlecard = memo(
               <div className="img_part">
                 {articles.descPhoto !== null ? (
                   <img
-                    src={`data:image/png;base64,${articles.descPhoto}`}
+                    src={articles.descPhoto}
                     alt="article_img_blob"
                   />
                 ) : (
@@ -145,7 +144,7 @@ const Articlecard = memo(
             <div className="article_reactions">
               <ul>
                 <li>
-                  <span className="card_topic">{articles.categories[0]}</span>
+                  <span className="card_topic">{articles.categories}</span>
                 </li>
                 <li>
                   <span className="show_of">

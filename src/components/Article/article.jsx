@@ -10,8 +10,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loading from "../../components/Modals/loadingmodal/loading";
 import Articletext from "../Articletext/articletext";
-import { handleLikeClick, getLikes, saveArticle } from "../../api";
+import { handleLikeClick, getLikes, saveArticle, fetchuserArticles } from "../../api";
 import CommentModal from "../Modals/commentModal/comment";
+import moment from "moment";
 const Article = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
@@ -22,16 +23,16 @@ const Article = () => {
   const [liked, setLiked] = useState(false);
   const [flagged, setFlaged] = useState("Not Flagged");
 
-  // useEffect(() => {
-    // const fetchPost = async () => {
-    //   try {
-    //     const response = await Axios.get(`/api/posts/${path}`);
-    //     setArticle(response.data);
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    // };
-    // fetchPost();
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await fetchuserArticles(path);
+        setArticle(response);
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchPost();
   //   if (path !== undefined) {
   //     const fetchData = async () => {
   //       try {
@@ -45,7 +46,7 @@ const Article = () => {
   //     };
   //     fetchData();
   //   }
-  // }, [path]);
+  }, [path]);
 
   function handleSave() {
     saveArticle(path);
@@ -69,9 +70,10 @@ const Article = () => {
   //     else if (flagged === "Not Flagged") setFlaged("Flagged");
   //   }
 
-  if (Object.keys(article).length === 0) {
-    return <Loading />;
-  }
+  // if (Object.keys(article).length === 0) {
+  //   return <Loading />;
+  // }
+  console.log()
 
   return (
     <>
@@ -82,9 +84,9 @@ const Article = () => {
             <h2>{article.title}</h2>
             <div className="div_main">
               <Link to={`/profile/${article.authorId}`}>
-                {article.authorProfilePic ? (
+                {article.authorProfile ? (
                   <img
-                    src={`data:image/png;base64,${article.authorProfilePic}`}
+                    src={article.authorProfile}
                     alt="author_profile"
                   />
                 ) : (
@@ -102,10 +104,7 @@ const Article = () => {
                 </div>
                 <div className="div2">
                   <span>
-                    {new Date(article.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "2-digit",
-                    })}
+                    {moment(article.created_at.toDate()).fromNow()}
                   </span>
                   <span>{article.timeTakenToReadPost} min read</span>
                 </div>

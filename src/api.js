@@ -1,6 +1,6 @@
 // making use of firebase to process data
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth"
-import { collection, addDoc, getDocs, setDoc, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, setDoc, doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { db, auth, storage } from "./firebaseconfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -49,13 +49,22 @@ export const fetchUserData = async (id) => {
   }
 };
 
+// editing user profile
+export const editProfile = async(id, data) =>{
+  try{
+    const userRef = doc(db, "users", id);
+    await updateDoc(userRef, data);
+  }catch(err){
+    throw err
+  }
+}
+
 // creating a post
 // sending the desc photo to storage and getting back the url
-async function uploadImage(file, imgName)
+export async function uploadImage(file, imgName, folderName)
 {
   try{
-
-    const storageRef = ref(storage, `posts/${imgName}`)
+    const storageRef = ref(storage, `${folderName}/${imgName}`)
     const imgRes = await uploadBytes(storageRef, file);
     // getting the download url from imgRes
     const imgUrl = await getDownloadURL(imgRes.ref);
@@ -68,42 +77,50 @@ export const sendPostData = async (data) => {
   try {
     const imgFile = data.descPhoto
     const imgName = imgFile.name;
-    
-    const imgUrl = await uploadImage(imgFile, imgName);
+    const actData ={
+      ...data,
+      created_at: new Date()
+    }
+    const imgUrl = await uploadImage(imgFile, imgName, "posts");
     // reasigning the descPhoto
-    data.descPhoto = imgUrl;
-    const response = await addDoc(collection(db, "posts"), data);
+    actData.descPhoto = imgUrl;
+    const response = await addDoc(collection(db, "posts"), actData);
     return response
   } catch (error) {
     throw error
   }
 };
 
-// loging out
-export const Logout = async () => {
-  // try {
-  //   const response = await Axios.post("/api/auths/logout");
-  //   if (response.status === 200) {
-  //     window.location.href = "/";
-  //   } else {
-  //     console.log(response);
-  //   }
-  // } catch (error) {
-  //   throw error;
-  // }
-};
-
-
 export const fetchPostData = async() =>{
-    // try {
-    //     const response = await Axios.get("/api/posts");
-    //     return response.data;
-    // } catch (error) {
-    //     throw error;
-    // }
-}
+    try {
+        const response = await getDocs(collection (db, "posts"));
 
-// implementing pagination when getting post
+        const data = response.docs.map((post)=>{
+          return {...post, id: post.id, ...post.data()}
+        });
+        
+        return data;
+        // console.log(response.data());
+      } catch (error) {
+        throw error;
+      }
+    }
+    
+    // loging out
+    export const Logout = async () => {
+      // try {
+      //   const response = await Axios.post("/api/auths/logout");
+      //   if (response.status === 200) {
+      //     window.location.href = "/";
+      //   } else {
+      //     console.log(response);
+      //   }
+      // } catch (error) {
+      //   throw error;
+      // }
+    };
+    
+    // implementing pagination when getting post
 // export const fetchPostData = async (offset) => {
   // try {
   //   const response = await Axios.get(`/api/posts?offset=${offset}`);
@@ -114,12 +131,18 @@ export const fetchPostData = async() =>{
 // };
 
 export const fetchuserArticles = async (id) => {
-  // try {
-  //   const response = await Axios.get(`/api/posts/user/${id}`);
-  //   return response.data;
-  // } catch (error) {
-  //   throw error;
-  // }
+  try {
+    const docRef = doc(db, "posts", id);
+    const response = await getDoc(docRef);
+    if (response.exists())
+      return (response.data());
+    else{
+      console.log("there is no such post");
+      return {}
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 

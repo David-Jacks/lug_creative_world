@@ -2,14 +2,9 @@ import Articlecard from "../../components/Articlecard/articlecard";
 import Topbar from "../../components/Topbar/topbar";
 import "./dashboard.css";
 import top_author_default_img from "../../images/profilevactor.jpg";
-import { useQuery } from "react-query";
 import {
   fetchPostData,
-  getArticleByCat,
-  getArticleByTitle,
-  getCat,
-  getTopAuthors,
-  getToppost,
+  fetchUserData
 } from "../../api";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -24,7 +19,11 @@ const Dashboard = memo(() => {
   const [searchQuery, setSearchQuery] = useState("");
   const [titleQuery, setTitleQuery] = useState("");
   const [articleData, setArticleData] = useState([]);
+  // const [userData, setUserData] = useState({});
   const [offset, setOffset] = useState(0);
+
+  // getting userid from local storage
+  // const userid = localStorage.getItem("user").replace(/"/g, "")
   // const [hasMore, setHasMore] = useState(true);
   const [sidebar, setShowSidebar] = useState(true);
   // handling toggling for sidebar menu in smaller devices
@@ -32,23 +31,21 @@ const Dashboard = memo(() => {
     setShowSidebar(!sidebar);
   }, [sidebar]);
 
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const fetchPosts = useCallback(async () => {
     try {
-      const data = await fetchPostData(offset);
-      //   console.log(data);
-
+      const data = await fetchPostData();
       setArticleData(data);
       //   console.log(data.length);
-      setOffset(offset + data.length);
+      // setOffset(offset + data.length);
 
-      if (data.length === 0) {
-        // setHasMore(false);
-        return;
-      }
+      // if (data.length === 0) {
+      //   // setHasMore(false);
+      //   return;
+      // }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -57,22 +54,6 @@ const Dashboard = memo(() => {
   const catsData = categories;
   const topData = topdata;
   const topauthors = topauthor;
-
-  // const {
-  //   data: topData,
-  //   error: topError,
-  //   isLoading: topisLoading,
-  // } = useQuery("topdata", getToppost);
-  // const {
-  //   data: catsData,
-  //   error: catserror,
-  //   isLoading: catsisloading,
-  // } = useQuery("catsdata", getCat);
-  // const {
-  //   data: topauthors,
-  //   error: topauthorserror,
-  //   isLoading: topauthorsisloading,
-  // } = useQuery("topauthorsdata", getTopAuthors);
 
   useEffect(() => {
     // async function searcher() {
@@ -114,9 +95,9 @@ const Dashboard = memo(() => {
     sortedPosts = searchresult;
   }
 
-  // if (catsisloading || !articleData) {
-  //   return <Loading />;
-  // }
+  if (!sortedPosts) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -194,7 +175,7 @@ const Dashboard = memo(() => {
           </div>
           <div className={sidebar ? "dashboard_right" : "show_right"}>
             {sortedPosts && sortedPosts.map((data) => (
-              <Articlecard key={data._id} articles={data} />
+              <Articlecard key={data.id} articles={data} />
             ))}
             ;
           </div>

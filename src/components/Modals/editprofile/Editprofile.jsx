@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GiCancel } from "react-icons/gi";
 import "./Editprofile.css";
-// import { uploadProfileImage } from "../../../api";
+import { uploadImage, editProfile } from "../../../api";
 
 const EditModal = (props) => {
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
@@ -11,8 +11,7 @@ const EditModal = (props) => {
   const [lastName, setlastName] = useState("");
   const [email, setEmail] = useState("");
 
-  let imgUrl = "";
-  const profileUpdateData = { username, photo };
+  // let imgUrl = "";
 
   const handlePhotoChange = (e) => {
     const selectedPhoto = e.target.files[0];
@@ -20,15 +19,19 @@ const EditModal = (props) => {
     setIsPhotoSelected(true);
   };
 
+  console.log(props.userDataQuery.id)
   const handlePhoto = async (e) => {
-    // e.preventDefault();
-    // if (photo) {
-    //   imgUrl = await uploadProfileImage(photo);
-    // }
-    // profileUpdateData.photo = imgUrl;
-
-    // props.onClose();
-    // window.location.reload();
+    e.preventDefault();
+    if (photo) {
+      const imgUrl = await uploadImage(photo, photo.name, "users");
+      const dataObject = {
+        profilePicture : imgUrl
+      }
+      console.log(dataObject)
+      await editProfile(props.userDataQuery.id, dataObject);
+    }
+    props.onClose();
+    window.location.reload();
   };
 
   const handleSubmit = async (e) => {
@@ -91,6 +94,7 @@ const EditModal = (props) => {
             <input
               type="text"
               name="username"
+              value = {props.userDataQuery.username}
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
@@ -100,14 +104,14 @@ const EditModal = (props) => {
             <input type="text" placeholder="Lastname" />
             <input type="email" placeholder="Email" />
             <select name="year_select" id="">
-              <option value="">select level</option>
+              <option value={props.userDataQuery.year}>select level</option>
               <option value="foundation">foundation</option>
               <option value="year 1">year 1</option>
               <option value="year 2">year 2</option>
               <option value="year 3">year 3 </option>
             </select>
             <select name="program_select" id="">
-              <option value="">select program</option>
+              <option value={props.userDataQuery.program}>select program</option>
               <option value="Computer Science">Computer Science</option>
               <option value="Law">Law</option>
               <option value="Business Management">Business Management</option>

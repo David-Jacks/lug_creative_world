@@ -21,7 +21,7 @@ const Writepage = () => {
   const [timeTakenToReadPost, settimeTakenToReadPost] = useState(
     articleUpdateData.timeTakenToReadPost
   );
-  const [categories, setcategories] = useState("Programming");
+  const [categories, setcategories] = useState("");
   const [reviewed, setReviewed] = useState(true);
   const [userData, setUserData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,13 +38,15 @@ const Writepage = () => {
     fetchUser();
   }, []);
 
-  const author = userData.username;
   // since the author of every post will be the current user
+  const author = userData.username;
+  const authorProfile = userData.profilePicture;
   const authorId = userid; 
   const articleData = {
     title,
     body,
-    // author,
+    author,
+    authorProfile,
     description,
     timeTakenToReadPost,
     categories,
@@ -76,7 +78,12 @@ const Writepage = () => {
   };
 
   const handleCatChange = (e) => {
-    setcategories(e.target.value);
+      // const newObject = {
+      //   ...categories,// spread existing value
+      //   [e.target.value] : "" // add a new value that is not already in the categories
+      // }
+      // }
+      setcategories(e.target.value);
   };
   // const handleSave = () => {
   //   navigate("/profile");

@@ -4,7 +4,6 @@ import './index.css';
 import 'animate.css';
 import 'hover.css';
 import App from './App';
-import {QueryClientProvider, QueryClient} from "react-query";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import userReducer from "./features/users";
@@ -19,15 +18,11 @@ const store = configureStore({
   },
 });
 
-const queryClient = new QueryClient();
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
    <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
       <App />
-    </QueryClientProvider>
    </Provider>
   </React.StrictMode>
 );
