@@ -110,23 +110,13 @@ const PublishModal = (props) => {
               required
             >
               <option value="">Pick Category</option>
-              <option value="Student Business">Student Business</option>
-              <option value="Case Study">Case Study</option>
+              <option value="Student Business">Business</option>
               <option value="Lifestyle">Lifestyle</option>
               <option value="Health and wellness">Health and wellness</option>
-              <option value="Research Proposal">Research Proposal</option>
-              <option value="Comedy">Comedy</option>
-              <option value="Love and Relationships">
-                Love and Relationships
-              </option>
+              <option value="Comedy">Academics</option>
               <option value="Creative Writing">Creative Writing</option>
               <option value="Science and Technology">
                 Science and Technology
-              </option>
-              <option value="Announcements">Announcements</option>
-              <option value="Academics">Academics</option>
-              <option value="Sports and Entertainment">
-                Sports and Entertainment
               </option>
             </select>
           </label>

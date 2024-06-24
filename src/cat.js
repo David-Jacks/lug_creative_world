@@ -1,23 +1,27 @@
 export const categories = [
       {
         "id": 1,
-        "type": "Student Business"
+        "type": "Business"
       },
       {
         "id": 2,
-        "type": "Case Study"
-      },
-      {
-        "id": 3,
         "type": "Lifestyle"
       },
       {
-        "id": 4,
+        "id": 3,
         "type": "Health and wellness"
       },
       {
+        "id": 4,
+        "type": "Academics"
+      },
+      {
         "id": 5,
-        "type": "Research Proposal"
+        "type": "Creative Writing"
+      },
+      {
+        "id": 6,
+        "type": "Science and Technology"
       }
     ]
 

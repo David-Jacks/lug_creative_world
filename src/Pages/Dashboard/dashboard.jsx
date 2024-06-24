@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import Loading from "../../components/Modals/loadingmodal/loading";
 import { memo, useCallback, useEffect, useState } from "react";
 import Articlelist from "../../components/Articlelist/articlelist";
-import { categories, topauthor, topdata } from "../../cat";
+import { categories, topauthor } from "../../cat";
 
 const Dashboard = memo(() => {
   const [searchresult, setSearchResult] = useState();
@@ -19,6 +19,7 @@ const Dashboard = memo(() => {
   const [searchQuery, setSearchQuery] = useState("");
   const [titleQuery, setTitleQuery] = useState("");
   const [articleData, setArticleData] = useState([]);
+  const [topdata, setTopdata] = useState([]);
   // const [userData, setUserData] = useState({});
   const [offset, setOffset] = useState(0);
 
@@ -33,26 +34,36 @@ const Dashboard = memo(() => {
 
   useEffect(() => {
     fetchPosts();
+    getTopPost();
   }, []);
 
   const fetchPosts = useCallback(async () => {
     try {
       const data = await fetchPostData();
       setArticleData(data);
-      //   console.log(data.length);
-      // setOffset(offset + data.length);
-
-      // if (data.length === 0) {
-      //   // setHasMore(false);
-      //   return;
-      // }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, []); //i added offset as a depending and it was just changing
+  }, []);
 
+  const getTopPost = useCallback(async() =>{
+    try {
+      const data = await getTopPost();
+      setTopdata(data);
+      console.log(data)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [])
   const catsData = categories;
-  const topData = topdata;
+  let topData = []
+  if (topData.length > 3){
+    for (let i = 0; i < 3; i++){
+      topData.push(articleData[i])
+    }
+  }else{
+    topData = articleData
+  }
   const topauthors = topauthor;
 
   useEffect(() => {
@@ -146,7 +157,7 @@ const Dashboard = memo(() => {
                 {topData &&
                   topData.map((data) => (
                     <li key={data.id} className="link">
-                      <Articlelist article={data.text} />
+                      <Articlelist article={data} />
                     </li>
                   ))}
               </ul>

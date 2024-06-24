@@ -61,11 +61,11 @@ const Articlecard = memo(
     }
 
     function handleDelete() {
-      deleteArticle(articles._id);
+      deleteArticle(articles.id);
     }
 
     function handleSave() {
-      saveArticle(articles._id);
+      saveArticle(articles.id);
     }
 
     function handleUpdate() {
@@ -87,8 +87,7 @@ const Articlecard = memo(
       if (flagged === "Flagged") setFlaged("Not Flagged");
       else if (flagged === "Not Flagged") setFlaged("Flagged");
     }
-    // {moment(articles.created_at).format('MMMM Do, YYYY')}
-    console.log(articles.created_at.seconds)
+    
     return (
       <>
         <div className="article_post">

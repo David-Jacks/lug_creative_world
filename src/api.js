@@ -1,6 +1,6 @@
 // making use of firebase to process data
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth"
-import { collection, addDoc, getDocs, setDoc, doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, setDoc, doc, getDoc, updateDoc, Timestamp, query, orderBy, limit, where } from "firebase/firestore";
 import { db, auth, storage } from "./firebaseconfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -156,12 +156,23 @@ export const getCat = async () => {
 };
 
 export const getToppost = async () => {
-  // try {
-  //   const response = await Axios.get("/api/post/likes/top-liked");
-  //   return response.data;
-  // } catch (error) {
-  //   throw error;
-  // }
+  try {
+    const dbRef = collection(db, "posts");
+    const response = query(dbRef, where("likes", ">=", 0), orderBy("likes"), limit(3));
+
+    if (response.exists()){
+      const data = response.docs.map((post)=>{
+        return {...post, id: post.id, ...post.data()}
+      });
+
+      return data;
+    }else{
+      console.log("there is no such post");
+      return {}
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 // getting top authors

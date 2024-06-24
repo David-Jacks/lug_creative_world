@@ -28,6 +28,8 @@ const Article = () => {
       try {
         const response = await fetchuserArticles(path);
         setArticle(response);
+        console.log(response)
+        console.log(path)
       } catch (error) {
         throw error;
       }
@@ -104,7 +106,7 @@ const Article = () => {
                 </div>
                 <div className="div2">
                   <span>
-                    {moment(article.created_at.toDate()).fromNow()}
+                    {/* {moment(article.created_at.toDate()).fromNow()} */}
                   </span>
                   <span>{article.timeTakenToReadPost} min read</span>
                 </div>
