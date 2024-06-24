@@ -24,16 +24,6 @@ const Article = () => {
   const [flagged, setFlaged] = useState("Not Flagged");
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await fetchuserArticles(path);
-        setArticle(response);
-        console.log(response)
-        console.log(path)
-      } catch (error) {
-        throw error;
-      }
-    };
     fetchPost();
   //   if (path !== undefined) {
   //     const fetchData = async () => {
@@ -49,7 +39,16 @@ const Article = () => {
   //     fetchData();
   //   }
   }, [path]);
-
+  const fetchPost = async () => {
+    try {
+      const response = await fetchuserArticles(path);
+      setArticle(response);
+      console.log(response)
+     
+    } catch (error) {
+      throw error;
+    }
+  };
   function handleSave() {
     saveArticle(path);
   }
@@ -72,10 +71,9 @@ const Article = () => {
   //     else if (flagged === "Not Flagged") setFlaged("Flagged");
   //   }
 
-  // if (Object.keys(article).length === 0) {
-  //   return <Loading />;
-  // }
-  console.log()
+  if (Object.keys(article).length === 0) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -106,7 +104,7 @@ const Article = () => {
                 </div>
                 <div className="div2">
                   <span>
-                    {/* {moment(article.created_at.toDate()).fromNow()} */}
+                  {moment(article.created_at.toDate()).fromNow()}
                   </span>
                   <span>{article.timeTakenToReadPost} min read</span>
                 </div>

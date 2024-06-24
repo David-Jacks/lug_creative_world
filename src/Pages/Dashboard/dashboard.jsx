@@ -4,14 +4,17 @@ import "./dashboard.css";
 import top_author_default_img from "../../images/profilevactor.jpg";
 import {
   fetchPostData,
-  fetchUserData
+  getToppost,
+  getTopAuthors,
+  getArticleByCat,
+  getArticleByTitle
 } from "../../api";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Modals/loadingmodal/loading";
 import { memo, useCallback, useEffect, useState } from "react";
 import Articlelist from "../../components/Articlelist/articlelist";
-import { categories, topauthor } from "../../cat";
+import { categories } from "../../cat";
 
 const Dashboard = memo(() => {
   const [searchresult, setSearchResult] = useState();
@@ -19,8 +22,8 @@ const Dashboard = memo(() => {
   const [searchQuery, setSearchQuery] = useState("");
   const [titleQuery, setTitleQuery] = useState("");
   const [articleData, setArticleData] = useState([]);
-  const [topdata, setTopdata] = useState([]);
-  // const [userData, setUserData] = useState({});
+  const [topData, setTopdata] = useState([]);
+  const [topauthors, setTopauthor] = useState([]);
   const [offset, setOffset] = useState(0);
 
   // getting userid from local storage
@@ -32,15 +35,17 @@ const Dashboard = memo(() => {
     setShowSidebar(!sidebar);
   }, [sidebar]);
 
+  
   useEffect(() => {
     fetchPosts();
     getTopPost();
+    getTopAuthorsLIst();
   }, []);
 
   const fetchPosts = useCallback(async () => {
     try {
       const data = await fetchPostData();
-      setArticleData(data);
+      setArticleData(data); 
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -48,41 +53,46 @@ const Dashboard = memo(() => {
 
   const getTopPost = useCallback(async() =>{
     try {
-      const data = await getTopPost();
+      const data = await getToppost();
       setTopdata(data);
-      console.log(data)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }, [])
   const catsData = categories;
-  let topData = []
-  if (topData.length > 3){
-    for (let i = 0; i < 3; i++){
-      topData.push(articleData[i])
-    }
-  }else{
-    topData = articleData
-  }
-  const topauthors = topauthor;
 
+  const getTopAuthorsLIst = useCallback(async() =>{
+      const data = await getTopAuthors();
+      setTopauthor(data)
+      // console.log(topauthors)
+  },[])
+
+// searching 
   useEffect(() => {
-    // async function searcher() {
-    //   const ans = await getArticleByCat(searchQuery);
-    //   setSearchResult(ans);
-    // }
-
-    // searcher();
+    searcher();
   }, [searchQuery]);
 
-  useEffect(() => {
-    // async function searchByTitle() {
-    //   const ans = await getArticleByTitle(titleQuery);
-    //   setSearchResult(ans);
-    // }
+  const searcher =  useCallback(async() =>{
+    const ans = await getArticleByCat(searchQuery);
+    if (ans.length > 0){
+      setSearchResult(ans);
+    }else{
+      setSearchResult(articleData);
+    }
+  },[searchQuery])
 
-    // searchByTitle();
+  useEffect(() => {
+    searchByTitle();
   }, [titleQuery]);
+ 
+  const searchByTitle = useCallback(async() => {
+    const ans = await getArticleByTitle(titleQuery);
+    if (ans.length > 0){
+      setSearchResult(ans);
+    }else{
+      setSearchResult(articleData);
+    }
+  }, [titleQuery])
 
   let sortedPosts;
 
@@ -90,19 +100,18 @@ const Dashboard = memo(() => {
     setSearching(true);
     setSearchQuery(val);
     setShowSidebar(true);
-    console.log(val);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     setSearching(true);
-
-    // setTitleQuery(titleQuery)
+    setTitleQuery(titleQuery)
   };
+
   // this is to sort the post according to the api calling state
   if (!searching) {
     sortedPosts = articleData;
-  } else if (searching) {
+  } else if(searching) {
     sortedPosts = searchresult;
   }
 
@@ -166,15 +175,14 @@ const Dashboard = memo(() => {
             <div className="top_authors">
               <h2>Top Authors</h2>
               <div className="authors_contain">
-                {/* `}
-                            i will add this later*/}
+        
                 {topauthors &&
                   topauthors.map((data) => (
-                    <Link key={data.name} to={`/profile/${data.id}`}>
+                    <Link key={data.id} to={`/profile/${data.id}`}>
                       <img
                         src={
-                          data.profilePic
-                            ? `data:image/png;base64,${data.profilePic}`
+                          data.profilePicture
+                            ? data.profilePicture
                             : top_author_default_img
                         }
                         alt="top_author_profile"
@@ -185,9 +193,9 @@ const Dashboard = memo(() => {
             </div>
           </div>
           <div className={sidebar ? "dashboard_right" : "show_right"}>
-            {sortedPosts && sortedPosts.map((data) => (
+            {sortedPosts ? sortedPosts.map((data) => (
               <Articlecard key={data.id} articles={data} />
-            ))}
+            )): <h1>Feed Loading Please wait......</h1>}
             ;
           </div>
         </div>

@@ -1,43 +1,33 @@
 export const categories = [
       {
         "id": 1,
-        "type": "Business"
+        "type": "All"
       },
       {
         "id": 2,
-        "type": "Lifestyle"
+        "type": "Business"
       },
       {
         "id": 3,
-        "type": "Health and wellness"
+        "type": "Lifestyle"
       },
       {
         "id": 4,
-        "type": "Academics"
+        "type": "Health and wellness"
       },
       {
         "id": 5,
-        "type": "Creative Writing"
+        "type": "Academics"
       },
       {
         "id": 6,
+        "type": "Creative Writing"
+      },
+      {
+        "id": 7,
         "type": "Science and Technology"
       }
     ]
 
-export const topdata = [
-    {
-        "id": "1",
-        "text": "Jane Doe is going to school"
-      }
-]
 
-export const topauthor = [
-          {
-            "id": "1",
-            "name": "Jane Doe",
-            "profilePic": null
-          }
-
-]
   

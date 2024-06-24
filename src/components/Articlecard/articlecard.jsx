@@ -25,7 +25,7 @@ const Articlecard = memo(
     const dispatch = useDispatch();
     const userdatastring = localStorage.getItem("user");
     const user = JSON.parse(userdatastring);
-    const rightUser = user._id === articles.authorId;
+    const rightUser = user === articles.authorId;
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
     const [flagged, setFlaged] = useState("Not Flagged");
@@ -55,7 +55,7 @@ const Articlecard = memo(
         setLiked(!liked);
       }
 
-      const ans = await handleLikeClick(articles._id);
+      const ans = await handleLikeClick(articles.id);
       setLiked(ans.liked);
       setLikes(ans.likes);
     }

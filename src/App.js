@@ -27,7 +27,7 @@ const App = () => {
 
   useEffect(() => {
     // Set darkmode state based on the theme value
-    console.log(theme);
+    // console.log(theme);
     if (theme) {
       setDarkMode(!theme);
     } else {

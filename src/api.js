@@ -157,17 +157,17 @@ export const getCat = async () => {
 
 export const getToppost = async () => {
   try {
-    const dbRef = collection(db, "posts");
-    const response = query(dbRef, where("likes", ">=", 0), orderBy("likes"), limit(3));
+    const dbRef = query(collection(db, "posts"), limit(3));
+    const response = await getDocs(dbRef);
 
-    if (response.exists()){
+    if (response){
       const data = response.docs.map((post)=>{
         return {...post, id: post.id, ...post.data()}
       });
 
       return data;
     }else{
-      console.log("there is no such post");
+      console.log("there are no such post");
       return {}
     }
   } catch (error) {
@@ -177,12 +177,21 @@ export const getToppost = async () => {
 
 // getting top authors
 export const getTopAuthors = async () => {
-  // try {
-  //   const res = await Axios.get("/api/post/likes/topauthors/top-liked-authors");
-  //   return res.data;
-  // } catch (error) {
-  //   throw error;
-  // }
+  try {
+    const dbRef = query(collection(db, "users"), limit(3))
+    const res = await getDocs(dbRef);
+    if (res){
+      const data = res.docs.map((user)=>{
+        return {...user, id: user.id, ...user.data()}
+      })
+      
+      return data;
+    }else{
+      console.log("there are no such users")
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteArticle = async (id) => {
@@ -316,20 +325,38 @@ export const delComment = async (id, commentid) => {
 
 // dealing with searching
 
-export const getArticleByCat = async (query) => {
-//   try {
-//     const res = await Axios.get(`/api/categories/${query}`);
-//     return res.data;
-//   } catch (error) {
-//     throw error;
-//   }
+export const getArticleByCat = async (cat) => {
+  try {
+    const dbRef = collection(db, "posts") 
+    const queryRef = query(dbRef, where("categories", "==", `${cat}`));
+    const response = await getDocs(queryRef);
+    if (response){
+      const data  = response.docs.map((post) =>{
+        return {...post, id: post.id, ...post.data()}
+      })
+      return data
+    }else{
+      console.log("no cat of such type present");
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const getArticleByTitle = async (query) => {
-//   try {
-//     const res = await Axios.get(`/api/posts/search?q=${query}`);
-//     return res.data;
-//   } catch (error) {
-//     throw error;
-//   }
+export const getArticleByTitle = async (search) => {
+  try {
+    const dbRef = collection(db, "posts") 
+    const queryRef = query(dbRef, where("title", "==", `${search}`));
+    const response = await getDocs(queryRef);
+    if (response){
+      const data  = response.docs.map((post) =>{
+        return {...post, id: post.id, ...post.data()}
+      })
+      return data
+    }else{
+      console.log("no cat of such type present");
+    }
+  } catch (error) {
+    throw error;
+  }
 };
