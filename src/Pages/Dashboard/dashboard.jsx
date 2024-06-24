@@ -108,7 +108,7 @@ const Dashboard = memo(() => {
     setTitleQuery(titleQuery)
   };
 
-  // this is to sort the post according to the api calling state
+  // this is to sort the post according to the api communication state
   if (!searching) {
     sortedPosts = articleData;
   } else if(searching) {

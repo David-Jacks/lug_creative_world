@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/751.e054a0d7.chunk.css","mappings":"AAAA,gBAEI,iBACJ","sources":["Pages/Home/home.css"],"sourcesContent":["#home_container\r\n{\r\n    overflow-y: scroll;\r\n}"],"names":[],"sourceRoot":""}

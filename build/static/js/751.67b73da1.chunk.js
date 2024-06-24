@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunklug_creative_world=self.webpackChunklug_creative_world||[]).push([[751],{751:(e,r,c)=>{c.r(r),c.d(r,{default:()=>a});var l=c(4603),s=c(579);const a=()=>(0,s.jsx)(s.Fragment,{children:(0,s.jsx)("div",{id:"home_container",children:(0,s.jsx)(l.A,{})})})}}]);
-//# sourceMappingURL=751.67b73da1.chunk.js.map
