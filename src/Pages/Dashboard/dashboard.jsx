@@ -24,7 +24,7 @@ const Dashboard = memo(() => {
   const [articleData, setArticleData] = useState([]);
   const [topData, setTopdata] = useState([]);
   const [topauthors, setTopauthor] = useState([]);
-  const [offset, setOffset] = useState(0);
+  // const [offset, setOffset] = useState(0);
 
   // getting userid from local storage
   // const userid = localStorage.getItem("user").replace(/"/g, "")
@@ -36,12 +36,7 @@ const Dashboard = memo(() => {
   }, [sidebar]);
 
   
-  useEffect(() => {
-    fetchPosts();
-    getTopPost();
-    getTopAuthorsLIst();
-  }, []);
-
+  
   const fetchPosts = useCallback(async () => {
     try {
       const data = await fetchPostData();
@@ -67,10 +62,13 @@ const Dashboard = memo(() => {
       // console.log(topauthors)
   },[])
 
-// searching 
   useEffect(() => {
-    searcher();
-  }, [searchQuery]);
+    fetchPosts();
+    getTopPost();
+    getTopAuthorsLIst();
+  }, [fetchPosts, getTopPost, getTopAuthorsLIst]);
+
+// searching 
 
   const searcher =  useCallback(async() =>{
     const ans = await getArticleByCat(searchQuery);
@@ -79,12 +77,13 @@ const Dashboard = memo(() => {
     }else{
       setSearchResult(articleData);
     }
-  },[searchQuery])
+  },[searchQuery, articleData])
 
   useEffect(() => {
-    searchByTitle();
-  }, [titleQuery]);
- 
+    searcher();
+  }, [searcher]);
+
+  
   const searchByTitle = useCallback(async() => {
     const ans = await getArticleByTitle(titleQuery);
     if (ans.length > 0){
@@ -92,8 +91,12 @@ const Dashboard = memo(() => {
     }else{
       setSearchResult(articleData);
     }
-  }, [titleQuery])
+  }, [titleQuery, articleData])
 
+  useEffect(() => {
+    searchByTitle();
+  }, [searchByTitle]);
+ 
   let sortedPosts;
 
   const handleCatClick = (val) => {

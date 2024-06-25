@@ -1,6 +1,6 @@
 // making use of firebase to process data
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth"
-import { collection, addDoc, getDocs, setDoc, doc, getDoc, updateDoc, Timestamp, query, orderBy, limit, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, setDoc, doc, getDoc, updateDoc, query, limit, where } from "firebase/firestore";
 import { db, auth, storage } from "./firebaseconfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
